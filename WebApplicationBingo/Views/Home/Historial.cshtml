@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Historial del Bingo";
+}
+<h1>@ViewData["Title"]</h1>
+<br />
+<h2>Cartones ganadores</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Carton1</th>
+            <th>Carton2</th>
+            <th>Carton3</th>
+            <th>Carton4</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in ViewData["HistorialCartones"] as List<HistorialCartonesViewModel>)
+        {
+            <tr>
+                <td>@item.Fecha</td>
+                <td>@item.Carton1</td>
+                <td>@item.Carton2</td>
+                <td>@item.Carton3</td>
+                <td>@item.Carton4</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<h2>Bolillas lanzadas</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>NroBolilla</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewData["HistorialBolillero"] as List<HistorialBolilleroViewModel>)
+        {
+                <tr>
+                    <td>@item.Fecha</td>
+                    <td>@item.NroBolilla</td>
+                </tr>
+        }
+    </tbody>
+</table>
+

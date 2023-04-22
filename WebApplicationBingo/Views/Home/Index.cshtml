@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Bingo";
+    string[] bgColor = { "bg-success", "bg-danger", "bg-warning", "bg-info" };
+    string[] textColor = { "text-light", "text-dark" };
+}
+
+<div class="text-center align-items-center justify-content-center">
+    <br/>
+    <div class="row align-items-center justify-content-center">
+        @for (int k = 0; k < 2; k++)
+        {
+            var parCartones = ViewBag.Modelo.Cartones.GetRange(k * 2, 2);   
+                <div class="row-cols-2 d-md-flex flex-row">
+                @for (var i = 0; i < 2; i++)
+                {
+                                <div class="col mx-2">
+                                    <table class="table table-bordered border-3 border-dark">
+                                            <tr class=@bgColor[(parCartones[i].Id)-1]>
+                                                        <td colspan="4" class="@textColor[k] text-start h6 border-end-0">Cartón Nro: @parCartones[i].Id</td>
+                                                <td colspan="5" class="@textColor[k] text-end h6 border-start-0">Aciertos: @parCartones[i].CantidadDeAciertos</td>
+                                            </tr>
+                            @{
+                                var carton = parCartones[i].ListaDeNumeros;
+                            }
+                                                    <tr>
+                                                        <td class="@ViewBag.Colores[@carton[0]]" id="@carton[0]">@carton[0]</td>
+                                                        <td class="bg-primary"> </td>
+                                                        <td class="@ViewBag.Colores[@carton[4]]" id="@carton[4]">@carton[4]</td>
+                                                        <td class="bg-primary"> </td>
+                                                        <td class="@ViewBag.Colores[@carton[7]]" id="@carton[7]">@carton[7]</td>
+                                                        <td class="@ViewBag.Colores[@carton[9]]" id="@carton[9]">@carton[9]</td>
+                                                        <td class="bg-primary"> </td>
+                                                        <td class="bg-primary"> </td>
+                                                        <td class="@ViewBag.Colores[@carton[14]]" id="@carton[14]">@carton[14]</td> 
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="@ViewBag.Colores[@carton[1]]" id="@carton[1]">@carton[1]</td>
+                                                        <td class="@ViewBag.Colores[@carton[2]]" id="@carton[2]">@carton[2]</td>
+                                                        <td class="bg-primary"> </td>
+                                                        <td class="@ViewBag.Colores[@carton[6]]" id="@carton[6]">@carton[6]</td>
+                                                        <td class="bg-primary"> </td>    
+                                                        <td class="@ViewBag.Colores[@carton[10]]" id="@carton[10]">@carton[10]</td>
+                                                        <td class="bg-primary"> </td>
+                                                        <td class="@ViewBag.Colores[@carton[12]]" id="@carton[12]">@carton[12]</td>
+                                                        <td class="bg-primary"> </td>    
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="bg-primary"> </td>
+                                                        <td class="@ViewBag.Colores[@carton[3]]" id="@carton[3]">@carton[3]</td>
+                                                        <td class="@ViewBag.Colores[@carton[5]]" id="@carton[5]">@carton[5]</td>
+                                                        <td class="bg-primary">
+                                                        <td class="@ViewBag.Colores[@carton[8]]" id="@carton[8]">@carton[8]</td>
+                                                        <td class="bg-primary">
+                                                        <td class="@ViewBag.Colores[@carton[11]]" id="@carton[11]">@carton[11]</td>
+                                                        <td class="@ViewBag.Colores[@carton[13]]" id="@carton[13]">@carton[13]</td>
+                                                        <td class="bg-primary"> </td>    
+                                                    </tr>
+                                        </table>
+                                    </div>
+                }
+                </div>
+        }
+    <br/>
+        @if (TempData["msj"] != null)
+        {
+                <div class="row d-md-flex flex-row">
+                        <div class="alert alert-success display-6" role="alert">
+                        <strong>¡BINGO! </strong>@TempData["msj"]
+                    </div>
+                </div>
+        }
+
+    <div class="row d-md-flex flex-row">
+        <div class="col-md-auto my-1">
+    @*Mediante este fomulario se reenvían al Controller los datos del modelo recibido por el mismo, evitando que se
+        pierdan dichos datos ya que con cada asp-action request se instancia un nuevo Controller y se pierde la referencia
+        al anterior,  por lo que al retornar nuevamente esta vista se crearían nuevos cartones. *@
+            <form asp-area="" asp-controller="Home" asp-action="Launcher">
+                    @foreach (var color in ViewBag.Colores)
+                    {
+                                <input type="hidden" name="colores" value="@color" />
+                    }
+                    @foreach (var bolilla in ViewBag.Modelo.Lanzador.BolillasObtenidas)
+                    {
+                            <input type="hidden" name="bolillasObtenidas" value="@bolilla" />
+                    }
+                    @foreach (var carton in ViewBag.Modelo.Cartones)
+                    {
+                            <input type="hidden" name="listaDeAciertos" value="@carton.CantidadDeAciertos" />
+                    }
+                    @foreach (var nro in ViewBag.Modelo.Cartones[0].ListaDeNumeros)
+                    {
+                            <input type="hidden" name="carton1" value="@nro" />
+                    }
+                    @foreach (var nro in ViewBag.Modelo.Cartones[1].ListaDeNumeros)
+                    {
+                            <input type="hidden" name="carton2" value="@nro" />
+                    }
+                    @foreach (var nro in ViewBag.Modelo.Cartones[2].ListaDeNumeros)
+                    {
+                            <input type="hidden" name="carton3" value="@nro" />
+                    }
+                    @foreach (var nro in ViewBag.Modelo.Cartones[3].ListaDeNumeros)
+                    {
+                            <input type="hidden" name="carton4" value="@nro" />
+                    }
+                <button id="Lanzador"class="btn btn-primary" type="submit" disabled="@ViewData["Lanzador"]">Lanzar Bolilla</button>
+            </form>
+        </div>
+        <div class="col-md-auto py-1 my-1 alert alert-primary" role="alert">
+            <p class="h6">Bolilla Nro: @ViewBag.Bolilla</p>
+        </div>
+         <div class="col-md-auto my-1">
+            <a class="btn btn-secondary @ViewData["Reset"]" asp-area="" asp-controller="Home" asp-action="Reset">Resetear</a>
+        </div>
+    </div>
+    </div>
+</div>
